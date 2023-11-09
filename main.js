@@ -10,6 +10,11 @@ import { PLYLoader } from 'ply';
 // Flags
 let geomteryHasBeenDescribed = false;
 
+const vertexShader = await fetch('vert.glsl').then(r => r.text());
+const fragmentShader = await fetch('frag.glsl').then(r => r.text());
+
+console.log(vertexShader, fragmentShader);
+
 // Scene setup
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x999999);
@@ -33,8 +38,18 @@ scene.add(light.target);
 
 // Exmample 1: Create a cube
 const geometry = new THREE.BoxGeometry(1, 1, 1);
+const shaderMaterial = new THREE.ShaderMaterial({
+	uniforms:{
+		colorA: {
+			type: "vec3",
+			value: new THREE.Color(0x0000FF)
+		}
+	},
+	vertexShader,
+	fragmentShader,
+})
 const exampleMaterial = new THREE.MeshStandardMaterial({ color: '#00ee00' });
-const cube = new THREE.Mesh(geometry, exampleMaterial);
+const cube = new THREE.Mesh(geometry, shaderMaterial);
 scene.add(cube);
 cube.position.y += 2; // move cube upwards a bit
 
@@ -46,7 +61,7 @@ loader.load('models/monkey.ply',
 	function (geometry) {
 		logoPLY = new THREE.Mesh(geometry)
 		scene.add(logoPLY);
-		logoPLY.material = exampleMaterial;
+		logoPLY.material = shaderMaterial;
 		logoPLY.position.y -= 2;
 		logoPLY.scale.x *= .5;
 		logoPLY.scale.y *= .5;
