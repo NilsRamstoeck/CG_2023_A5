@@ -8,7 +8,7 @@ import { GLTFLoader } from 'gltf';
 import { PLYLoader } from 'ply';
 
 // Flags
-var geomteryHasBeenDescribed = false;
+let geomteryHasBeenDescribed = false;
 
 // Scene setup
 const scene = new THREE.Scene();
@@ -40,7 +40,7 @@ cube.position.y += 2; // move cube upwards a bit
 
 // Example 2: Load 3D model mesh from PLY file
 // The loading happens asynchronoulsy
-var logoPLY = 0;
+let logoPLY = 0;
 const loader = new PLYLoader();
 loader.load('models/monkey.ply',
 	function (geometry) {
@@ -62,7 +62,7 @@ loader.load('models/monkey.ply',
 
 // Example 3: Load 3D model mesh from GLB (binary GLTF) file
 // The loading happens asynchronoulsy
-var logoGLB = 0;
+let logoGLB = 0;
 const loaderGLTF = new GLTFLoader();
 loaderGLTF.load('models/logo.glb',
 	function (gltf) {
