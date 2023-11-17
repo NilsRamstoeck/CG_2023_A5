@@ -23,7 +23,7 @@ camera.position.z = 5; // Move camera backwrds, away from scene origin
 
 // Renderer setup
 const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(window.innerWidth - 200, window.innerHeight - 200);
 document.body.appendChild(renderer.domElement);
 
 // Setuo light
@@ -63,6 +63,7 @@ loader.load('models/monkey.ply',
 		scene.add(logoPLY);
 		logoPLY.material = shaderMaterial;
 		logoPLY.position.y -= 2;
+		logoPLY.position.x -= 2;
 		logoPLY.scale.x *= .5;
 		logoPLY.scale.y *= .5;
 		logoPLY.scale.z *= .5;

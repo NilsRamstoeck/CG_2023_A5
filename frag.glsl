@@ -1,5 +1,11 @@
 uniform vec3 colorA;
+varying float pos;
 
 void main() {
-    gl_FragColor = vec4(colorA, 1.0);
+
+    if(pos > 0.25 && pos < 0.75){
+        discard;
+    }
+
+    gl_FragColor = vec4(colorA, 1.);
 }
