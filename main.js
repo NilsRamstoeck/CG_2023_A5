@@ -16,22 +16,48 @@ const fragmentShader = await fetch('frag.glsl').then(r => r.text());
 console.log(vertexShader, fragmentShader);
 
 // Create materials
-const shaderMaterial = new THREE.ShaderMaterial({
-	uniforms: {
-		colorA: {
-			type: "vec3",
-			value: new THREE.Color(0x0000FF)
-		}
-	},
-	vertexShader,
-	fragmentShader,
-});
+function createStandardMaterialInstance() {
+	return new THREE.ShaderMaterial({
+		uniforms: {
+			colorA: {
+				type: "vec3",
+				value: new THREE.Color(0x0000FF)
+			},
+			colorB: {
+				type: "vec3",
+				value: new THREE.Color(0x000000)
+			}
+		},
+		vertexShader,
+		fragmentShader,
+	});
+}
 
-const exampleMaterial = new THREE.MeshStandardMaterial({ color: '#00ee00' });
+const cubeMaterial = createStandardMaterialInstance();
+const monkeyMaterial = createStandardMaterialInstance();
+
+
+//attach color input listeners
+
+function applyColorToMaterial(color, material) {
+	material.uniforms.colorB = {
+		type: "vec3",
+		value: new THREE.Color(color)
+	};
+};
+
+document
+	.querySelector('input[name=color1]')
+	?.addEventListener('change', ({ currentTarget: { value } }) => applyColorToMaterial(value, cubeMaterial));
+
+document
+	.querySelector('input[name=color2]')
+	?.addEventListener('change', ({ currentTarget: { value } }) => applyColorToMaterial(value, monkeyMaterial));
+
 
 // Exmample 1: Create a cube
 const geometry = new THREE.BoxGeometry(1, 1, 1);
-const cube = new THREE.Mesh(geometry, shaderMaterial);
+const cube = new THREE.Mesh(geometry, cubeMaterial);
 scene.add(cube);
 cube.position.y += 2; // move cube upwards a bit
 
@@ -43,7 +69,7 @@ loader.load('models/monkey.ply',
 	function (geometry) {
 		logoPLY = new THREE.Mesh(geometry);
 		scene.add(logoPLY);
-		logoPLY.material = shaderMaterial;
+		logoPLY.material = monkeyMaterial;
 		logoPLY.position.y -= 2;
 		logoPLY.position.x -= 2;
 		logoPLY.scale.x *= .5;
